@@ -18,6 +18,10 @@ class NetrcReader
     Machine.new(name, config(name)) if machine_names.include?(name)
   end
 
+  def find!(name)
+    Machine.new(name, config!(name))
+  end
+
   def netrc_file(path = nil)
     File.expand_path(path || File.join(ENV['NETRC'] || home_path, '.netrc'))
   end
@@ -32,6 +36,10 @@ class NetrcReader
 
   def config(name)
     @data.find { |l| l.match(/machine #{name} login.*/) }
+  end
+
+  def config!(name)
+    config(name) || fail(NetrcReader::Error, "#{name} was not found: #{@path}")
   end
 
   class Machine
@@ -59,3 +67,5 @@ class NetrcReader
     end
   end
 end
+
+NetrcReader::Error = Class.new(StandardError)
