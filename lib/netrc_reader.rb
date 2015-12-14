@@ -1,40 +1,39 @@
-require 'netrc_reader/version'
+class NetrcReader
+  VERSION = '0.1.0'
 
-module NetrcReader
-  class Config
-    def initialize(path = nil)
-      @path = netrc_file(path)
-      @data = IO.readlines(@path)
-    end
-
-    def self.read(path = nil)
-      new(path)
-    end
-
-    def machine_names
-      @data.map { |l| l.match(/machine (.*) login.*/)[1] }
-    end
-
-    def [](name)
-      Machine.new(name, config(name)) if machine_names.include?(name)
-    end
-
-    def netrc_file(path = nil)
-      File.expand_path(path || File.join(ENV['NETRC'] || home_path, '.netrc'))
-    end
-
-    def home_path
-      # if defined?(Smo3Data)
-      #   Smo3Data::S3DConfig.options['home_path']
-      # else
-      Dir.respond_to?(:home) ? Dir.home : ENV['HOME']
-      # end
-    end
-
-    def config(name)
-      @data.find { |l| l.match(/machine #{name} login.*/) }
-    end
+  def initialize(path = nil)
+    @path = netrc_file(path)
+    @data = IO.readlines(@path)
   end
+
+  def self.read(path = nil)
+    new(path)
+  end
+
+  def machine_names
+    @data.map { |l| l.match(/machine (.*) login.*/)[1] }
+  end
+
+  def [](name)
+    Machine.new(name, config(name)) if machine_names.include?(name)
+  end
+
+  def netrc_file(path = nil)
+    File.expand_path(path || File.join(ENV['NETRC'] || home_path, '.netrc'))
+  end
+
+  def home_path
+    # if defined?(Smo3Data)
+    #   Smo3Data::S3DConfig.options['home_path']
+    # else
+    Dir.respond_to?(:home) ? Dir.home : ENV['HOME']
+    # end
+  end
+
+  def config(name)
+    @data.find { |l| l.match(/machine #{name} login.*/) }
+  end
+
   class Machine
     attr_reader :name
 
