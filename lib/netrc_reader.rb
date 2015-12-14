@@ -7,21 +7,23 @@ module NetrcReader
       @data = IO.readlines(@path)
     end
 
-    alias_method :read, :new
+    def self.read(path = nil)
+      new(path)
+    end
 
-    def self.machine_names
+    def machine_names
       @data.map { |l| l.match(/machine (.*) login.*/)[1] }
     end
 
-    def self.[](name)
+    def [](name)
       Machine.new(name, config(name)) if machine_names.include?(name)
     end
 
-    def self.netrc_file(path = nil)
+    def netrc_file(path = nil)
       File.expand_path(path || File.join(ENV['NETRC'] || home_path, '.netrc'))
     end
 
-    def self.home_path
+    def home_path
       # if defined?(Smo3Data)
       #   Smo3Data::S3DConfig.options['home_path']
       # else
@@ -44,11 +46,11 @@ module NetrcReader
     alias_method :machine, :name
 
     def password
-      creds.try { |md| md[:password] }
+      creds[:password] if creds.respond_to?(:[])
     end
 
     def login
-      creds.try { |md| md[:login] }
+      creds[:login] if creds.respond_to?(:[])
     end
 
     def creds
