@@ -65,6 +65,10 @@ class NetrcReader
         /machine (?<machine>.*) login (?<login>.*) password (?<password>.*)$/
       )
     end
+
+    def ftp_open_opts
+      [machine, login, password]
+    end
   end
 end
 
