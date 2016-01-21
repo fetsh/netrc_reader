@@ -1,5 +1,5 @@
 class NetrcReader
-  VERSION = '0.1.0'
+  VERSION = '0.1.1'
 
   def initialize(path = nil)
     @path = netrc_file(path)
