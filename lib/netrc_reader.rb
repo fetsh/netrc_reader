@@ -27,11 +27,7 @@ class NetrcReader
   end
 
   def home_path
-    # if defined?(Smo3Data)
-    #   Smo3Data::S3DConfig.options['home_path']
-    # else
     Dir.respond_to?(:home) ? Dir.home : ENV['HOME']
-    # end
   end
 
   def config(name)
