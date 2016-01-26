@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ['il.zoff@gmail.com']
 
   spec.summary       = 'Simple .netrc reader for internal usage only'
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.homepage      = 'https://github.com/ilzoff/netrc_reader'
   spec.license       = 'MIT'
 
   # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
